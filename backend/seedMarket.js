@@ -45,7 +45,36 @@ function genPrice(crop, district, dateStr) {
 async function seed() {
   console.log("🌾  Clearing old data and reseeding…");
 
-  // Drop + recreate for clean state
+  // Ensure prediction_log table exists (Railway fresh DB)
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS prediction_log (
+      id             INT PRIMARY KEY AUTO_INCREMENT,
+      crop           VARCHAR(100) NOT NULL,
+      state          VARCHAR(100) NOT NULL,
+      district       VARCHAR(100) NOT NULL,
+      predicted_price FLOAT NOT NULL,
+      actual_price   FLOAT,
+      prediction_date DATE NOT NULL,
+      target_date    DATE NOT NULL,
+      accuracy_pct   FLOAT,
+      created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      INDEX idx_crop_district_date (crop, district, target_date)
+    )
+  `);
+
+  // Ensure users table exists
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS users (
+      id         INT PRIMARY KEY AUTO_INCREMENT,
+      name       VARCHAR(100) NOT NULL,
+      email      VARCHAR(150) UNIQUE NOT NULL,
+      password   VARCHAR(255) NOT NULL,
+      role       ENUM('user','market') NOT NULL DEFAULT 'user',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  // Drop + recreate market_data for clean state
   await pool.execute("DROP TABLE IF EXISTS market_data");
   await pool.execute(`
     CREATE TABLE market_data (

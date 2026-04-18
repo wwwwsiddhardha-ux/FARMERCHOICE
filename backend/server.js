@@ -41,18 +41,20 @@ app.get("*", (req, res) => {
 
 const PORT = process.env.PORT || 5001;
 
-// ── Auto-seed fresh data then start server ────────────────
+// ── Start server first, seed DB in background ─────────────
 async function startServer() {
+  // Bind to PORT immediately so Railway health check passes
+  app.listen(PORT, () =>
+    console.log(`🌾  Server ready → http://localhost:${PORT}`)
+  );
+
+  // Seed and cron in background — don't block startup
   try {
     console.log("🌱  Seeding fresh market data…");
     await seed();
     startCron();
-    app.listen(PORT, () =>
-      console.log(`🌾  Server ready → http://localhost:${PORT}`)
-    );
   } catch (err) {
-    console.error("❌  Startup failed:", err.message);
-    process.exit(1);
+    console.error("⚠️  Seed failed (server still running):", err.message);
   }
 }
 
