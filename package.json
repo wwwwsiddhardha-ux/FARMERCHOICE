@@ -2,16 +2,11 @@
   "name": "krishiai-fullstack",
   "version": "1.0.0",
   "scripts": {
-    "install-all": "cd backend && npm install && cd ../frontend && npm install",
-     "start": "node backend/server.js",
-     "build": "echo Build skipped",
-    "dev:backend": "cd backend && npx nodemon server.js",
-    "dev:frontend": "cd frontend && npm run dev"
+    "install-all": "cd backend && npm install",
+    "start": "node backend/server.js",
+    "build": "echo Build skipped"
   },
-  "dependencies": {
-    "react-scripts": "^5.0.1"
-  }
-  "engines":{
-    "node":"22.x"
+  "engines": {
+    "node": "22.x"
   }
 }
