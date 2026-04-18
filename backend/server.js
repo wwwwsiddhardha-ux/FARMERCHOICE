@@ -19,7 +19,7 @@ const { startCron }       = require("./utils/cronJob");
 const { seed }            = require("./seedMarket");
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: '*', methods: ['GET','POST','PUT','DELETE','OPTIONS'], allowedHeaders: ['Content-Type','Authorization'] }));
 app.use(express.json());
 
 // ── API routes ────────────────────────────────────────────
@@ -46,19 +46,26 @@ const PORT = process.env.PORT || 5001;
 
 // ── Start server first, seed DB in background ─────────────
 async function startServer() {
-  // Bind to PORT immediately so Railway health check passes
   app.listen(PORT, () =>
     console.log(`🌾  Server ready → http://localhost:${PORT}`)
   );
 
-  // Seed and cron in background — don't block startup
-  try {
-    console.log("🌱  Seeding fresh market data…");
-    await seed();
-    startCron();
-  } catch (err) {
-    console.error("⚠️  Seed failed (server still running):", err.message);
-  }
+  // Wait 3s for Railway MySQL to be fully ready, then seed
+  setTimeout(async () => {
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      try {
+        console.log(`🌱  Seeding attempt ${attempt}…`);
+        await seed();
+        startCron();
+        console.log('✅  Seed complete, cron started.');
+        return;
+      } catch (err) {
+        console.error(`⚠️  Seed attempt ${attempt} failed: ${err.message}`);
+        if (attempt < 5) await new Promise(r => setTimeout(r, 5000 * attempt));
+      }
+    }
+    console.error('❌  All seed attempts failed. Server running without data.');
+  }, 3000);
 }
 
 startServer();

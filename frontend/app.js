@@ -10,8 +10,6 @@ function showApp() {
 }
 
 document.getElementById('lpGetStartedBtn').addEventListener('click', showApp);
-document.getElementById('lpSignupBtn').addEventListener('click', showApp);
-document.getElementById('lpLoginBtn').addEventListener('click', showApp);
 document.getElementById('lpExploreBtn').addEventListener('click', () => {
   document.getElementById('lpFeatures').scrollIntoView({ behavior: 'smooth' });
 });
@@ -201,7 +199,7 @@ async function loadForecast(crop, state, district) {
   const data = await apiPost(API.predict, { crop, state, district });
 
   if (!data) {
-    showForecastError('Prediction failed. Check backend connection.');
+    showForecastError('Prediction failed — DB may still be seeding. Please wait 30s and retry.');
     return;
   }
 
