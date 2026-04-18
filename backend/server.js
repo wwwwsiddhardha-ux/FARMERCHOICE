@@ -1,4 +1,7 @@
 require("dotenv").config();
+// Allow requires to resolve from root node_modules on Railway
+process.env.NODE_PATH = require("path").join(__dirname, "../node_modules");
+require("module").Module._initPaths();
 const express = require("express");
 const cors    = require("cors");
 const path    = require("path");
