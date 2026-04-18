@@ -10,6 +10,32 @@
 <body>
 
   <!-- STICKY MARKET BAR -->
+  <div class="market-bar" id="marketBar">
+    <div class="market-bar-inner">
+      <div class="mb-item">
+        <span class="mb-label">🌾 Crop</span>
+        <span class="mb-val" id="mbCrop">Select crop</span>
+      </div>
+      <div class="mb-divider"></div>
+      <div class="mb-item">
+        <span class="mb-label">💰 Tomorrow</span>
+        <span class="mb-val" id="mbTomorrow">--</span>
+      </div>
+      <div class="mb-divider"></div>
+      <div class="mb-item">
+        <span class="mb-label">🏛️ MSP</span>
+        <span class="mb-val" id="mbMsp">--</span>
+      </div>
+      <div class="mb-divider"></div>
+      <div class="mb-item">
+        <span class="mb-label">📊 Trend</span>
+        <span class="mb-trend" id="mbTrend">--</span>
+      </div>
+      <div class="mb-divider"></div>
+      <div class="mb-item">
+        <span class="mb-label">📍 District</span>
+        <span class="mb-val" id="mbDistrict">--</span>
+      </div>
       <span class="mb-updating" id="mbUpdating" style="display:none">⟳ Updating…</span>
     </div>
   </div>
@@ -153,7 +179,35 @@
       <div class="card pred-logic-card fade-in">
         <div class="pred-logic-header">
           <span class="pred-logic-icon">🧠</span>
+          <div>
+            <h3>How Tomorrow's Price is Predicted</h3>
+            <p class="pred-logic-sub">Our AI combines 4 signals to forecast the next price</p>
+          </div>
         </div>
+        <div class="pred-logic-grid">
+          <div class="pred-signal-box">
+            <div class="psig-icon">📈</div>
+            <div class="psig-label">Price Trend</div>
+            <div class="psig-desc" id="psigTrendVal">EMA + regression over last 14 days</div>
+          </div>
+          <div class="pred-signal-box">
+            <div class="psig-icon">🌦️</div>
+            <div class="psig-label">Weather Signal</div>
+            <div class="psig-desc" id="psigWeatherVal">Rain, heat &amp; humidity impact on supply</div>
+          </div>
+          <div class="pred-signal-box">
+            <div class="psig-icon">📰</div>
+            <div class="psig-label">News Sentiment</div>
+            <div class="psig-desc" id="psigNewsVal">NLP score from district news articles</div>
+          </div>
+          <div class="pred-signal-box">
+            <div class="psig-icon">🏛️</div>
+            <div class="psig-label">MSP Floor</div>
+            <div class="psig-desc" id="psigMspVal">Government minimum support price check</div>
+          </div>
+        </div>
+        <div class="pred-logic-signals" id="predSignalsList"></div>
+      </div>
     </section>
 
     <!-- DASHBOARD SECTION -->
@@ -302,6 +356,7 @@
         </div>
 
         <div class="ai-sidebar fade-in">
+          <div id="sourcesList"></div>
           <div class="card confidence-card" id="confidenceCard" style="display:none">
             <h3>Confidence</h3>
             <div class="confidence-bar-wrap">
