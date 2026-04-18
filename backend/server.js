@@ -30,12 +30,10 @@ app.use("/api/news",      newsSentimentRoutes);
 app.use("/api/accuracy",  accuracyRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-// ── Railway health check (no DB) ────────────────────────
-app.get("/", (req, res) => {
-  res.status(200).send("OK");
-});
+// ── Railway health check (no DB, must not block frontend) ─
+app.get("/health", (req, res) => res.status(200).send("OK"));
 
-// ── Serve plain HTML frontend ────────────────────────────
+// ── Serve plain HTML frontend ─────────────────────────────
 app.use(express.static(path.join(__dirname, "../frontend")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/index.html"));
