@@ -1,22 +1,29 @@
 {
-  "Punjab": {
-    "Ludhiana": ["Ludhiana East", "Ludhiana West"],
-    "Amritsar": ["Amritsar North", "Amritsar South"]
-  },
-  "Haryana": {
-    "Karnal": ["Karnal Central", "Indri"],
-    "Hisar": ["Hisar Urban", "Hansi"]
-  },
-  "Maharashtra": {
-    "Nashik": ["Nashik Road", "Sinnar"],
-    "Pune": ["Haveli", "Baramati"]
+  "Andhra Pradesh": {
+    "Srikakulam":    ["Srikakulam", "Tekkali", "Palasa", "Narasannapeta"],
+    "Vizianagaram":  ["Vizianagaram", "Bobbili", "Parvathipuram", "Salur"],
+    "Visakhapatnam": ["Visakhapatnam", "Bheemunipatnam", "Anakapalle", "Narsipatnam"],
+    "East Godavari": ["Kakinada", "Rajahmundry", "Amalapuram", "Ramachandrapuram"],
+    "West Godavari": ["Eluru", "Bhimavaram", "Tanuku", "Narsapur"],
+    "Krishna":       ["Machilipatnam", "Vijayawada", "Gudivada", "Nuzvid"],
+    "Guntur":        ["Guntur", "Tenali", "Narasaraopet", "Sattenapalle"],
+    "Prakasam":      ["Ongole", "Markapur", "Giddalur", "Kandukur"],
+    "Nellore":       ["Nellore", "Gudur", "Kavali", "Atmakur"],
+    "Chittoor":      ["Chittoor", "Tirupati", "Madanapalle", "Puttur"],
+    "Kadapa":        ["Kadapa", "Proddatur", "Rajampet", "Jammalamadugu"],
+    "Anantapur":     ["Anantapur", "Guntakal", "Dharmavaram", "Hindupur"],
+    "Kurnool":       ["Kurnool", "Nandyal", "Adoni", "Yemmiganur"]
   },
   "Telangana": {
-    "Nizamabad": ["Nizamabad Urban", "Bodhan"],
-    "Warangal": ["Warangal Urban", "Hanamkonda"]
-  },
-  "Andhra Pradesh": {
-    "Srikakulam": ["Tekkali", "Srikakulam"],
-    "Visakhapatnam": ["Visakhapatnam Urban", "Bheemunipatnam"]
+    "Hyderabad":     ["Secunderabad", "Charminar", "Musheerabad", "Nampally"],
+    "Rangareddy":    ["Rajendranagar", "Shamshabad", "Ibrahimpatnam", "Chevella"],
+    "Medak":         ["Medak", "Sangareddy", "Siddipet", "Narsapur"],
+    "Nizamabad":     ["Nizamabad", "Bodhan", "Armoor", "Banswada"],
+    "Adilabad":      ["Adilabad", "Mancherial", "Nirmal", "Bhainsa"],
+    "Karimnagar":    ["Karimnagar", "Peddapalli", "Jagtial", "Metpally"],
+    "Warangal":      ["Warangal", "Hanamkonda", "Jangaon", "Narsampet"],
+    "Khammam":       ["Khammam", "Kothagudem", "Bhadrachalam", "Yellandu"],
+    "Nalgonda":      ["Nalgonda", "Miryalaguda", "Suryapet", "Bhongir"],
+    "Mahbubnagar":   ["Mahbubnagar", "Wanaparthy", "Gadwal", "Nagarkurnool"]
   }
 }

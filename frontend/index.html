@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer's Choice</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- STICKY MARKET BAR -->
+      <span class="mb-updating" id="mbUpdating" style="display:none">⟳ Updating…</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🌾</span>
+        <div>
+          <h1>Farmer's Choice</h1>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-section="home">Home</button>
+        <button class="nav-btn" data-section="forecast">Forecast</button>
+        <button class="nav-btn" data-section="dashboard">Dashboard</button>
+        <button class="nav-btn" data-section="comparison">Comparison</button>
+        <button class="nav-btn" data-section="ai">AI Research</button>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <button class="nav-btn active" data-section="home">Home</button>
+      <button class="nav-btn" data-section="forecast">Forecast</button>
+      <button class="nav-btn" data-section="dashboard">Dashboard</button>
+      <button class="nav-btn" data-section="comparison">Comparison</button>
+      <button class="nav-btn" data-section="ai">AI Research</button>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- HOME SECTION -->
+    <section id="home" class="section active">
+
+      <!-- Location Flow -->
+      <div class="location-card card fade-in">
+        <h2 class="section-title">📍 Select Your Location & Crop</h2>
+        <div class="location-grid">
+          <div class="form-group">
+            <label>State</label>
+            <select id="stateSelect" class="select">
+              <option value="">-- Select State --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>District</label>
+            <select id="districtSelect" class="select" disabled>
+              <option value="">-- Select District --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Crop</label>
+            <select id="cropSelect" class="select" disabled>
+              <option value="">-- Select Crop --</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="analyzeBtn" disabled>
+          <span>🔍 Analyze</span>
+        </button>
+      </div>
+
+      <!-- Feature Cards -->
+      <div class="features-grid fade-in">
+        <div class="feature-card" data-section="forecast">
+          <div class="feature-icon">📈</div>
+          <h3>Price Prediction</h3>
+          <p>7-day price forecast with ML accuracy</p>
+        </div>
+        <div class="feature-card" data-section="dashboard">
+          <div class="feature-icon">🌤️</div>
+          <h3>Weather Impact</h3>
+          <p>Real-time weather effect on crop prices</p>
+        </div>
+        <div class="feature-card" data-section="dashboard">
+          <div class="feature-icon">💡</div>
+          <h3>Sell Recommendation</h3>
+          <p>AI-powered sell or hold advice</p>
+        </div>
+        <div class="feature-card" data-section="dashboard">
+          <div class="feature-icon">🏛️</div>
+          <h3>MSP Info</h3>
+          <p>Minimum Support Price comparison</p>
+        </div>
+        <div class="feature-card" data-section="dashboard">
+          <div class="feature-icon">📰</div>
+          <h3>News Impact</h3>
+          <p>Market news affecting your crop</p>
+        </div>
+        <div class="feature-card" data-section="ai">
+          <div class="feature-icon">🤖</div>
+          <h3>AI Research</h3>
+          <p>Ask anything about farming & markets</p>
+        </div>
+        <div class="feature-card" data-section="comparison">
+          <div class="feature-icon">🗺️</div>
+          <h3>District Comparison</h3>
+          <p>Find the best market to sell</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORECAST SECTION -->
+    <section id="forecast" class="section">
+      <div class="section-header fade-in">
+        <h2 class="section-title">📈 Price Forecast</h2>
+        <p class="section-sub" id="forecastMeta">Select a crop to view forecast</p>
+      </div>
+
+      <div class="forecast-summary fade-in">
+        <div class="forecast-card card">
+          <div class="forecast-label">Tomorrow</div>
+          <div class="forecast-value" id="f1">--</div>
+          <div class="forecast-unit">₹/quintal</div>
+          <div class="forecast-change" id="f1c"></div>
+        </div>
+        <div class="forecast-card card">
+          <div class="forecast-label">3-Day Avg</div>
+          <div class="forecast-value" id="f3">--</div>
+          <div class="forecast-unit">₹/quintal</div>
+          <div class="forecast-change" id="f3c"></div>
+        </div>
+        <div class="forecast-card card">
+          <div class="forecast-label">7-Day Avg</div>
+          <div class="forecast-value" id="f7">--</div>
+          <div class="forecast-unit">₹/quintal</div>
+          <div class="forecast-change" id="f7c"></div>
+        </div>
+      </div>
+
+      <div class="card chart-card fade-in">
+        <h3>Price Trend (7 Days)</h3>
+        <div class="chart-wrap">
+          <canvas id="forecastChart"></canvas>
+        </div>
+      </div>
+
+      <!-- PREDICTION LOGIC EXPLAINER -->
+      <div class="card pred-logic-card fade-in">
+        <div class="pred-logic-header">
+          <span class="pred-logic-icon">🧠</span>
+        </div>
+    </section>
+
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboard" class="section">
+      <div class="section-header fade-in">
+        <h2 class="section-title">📊 Dashboard</h2>
+        <p class="section-sub" id="dashMeta">Select a crop to load dashboard</p>
+      </div>
+
+      <div class="dashboard-grid">
+
+        <!-- Recommendation Card -->
+        <div class="card rec-card fade-in" id="recCard">
+          <div class="rec-header">
+            <span class="rec-icon" id="recIcon">💡</span>
+            <div>
+              <div class="rec-action" id="recAction">--</div>
+              <div class="rec-label">Recommendation</div>
+            </div>
+            <div class="risk-badge" id="riskBadge">--</div>
+          </div>
+          <p class="rec-reason" id="recReason">Analyze a crop to get recommendation.</p>
+          <div class="rec-meta">
+            <span id="recConfidence"></span>
+          </div>
+        </div>
+
+        <!-- Weather Card -->
+        <div class="card weather-card fade-in" id="weatherCard">
+          <h3>🌤️ Weather Impact</h3>
+          <div class="weather-body">
+            <div class="weather-main">
+              <span class="weather-icon" id="weatherIcon">🌡️</span>
+              <div>
+                <div class="weather-temp" id="weatherTemp">--°C</div>
+                <div class="weather-desc" id="weatherDesc">--</div>
+              </div>
+            </div>
+            <div class="weather-stats">
+              <div class="w-stat"><span>💧</span><span id="weatherHumidity">--%</span></div>
+              <div class="w-stat"><span>🌬️</span><span id="weatherWind">-- km/h</span></div>
+              <div class="w-stat"><span>🌧️</span><span id="weatherRain">-- mm</span></div>
+            </div>
+          </div>
+          <div class="weather-impact" id="weatherImpact"></div>
+        </div>
+
+        <!-- News Card -->
+        <div class="card news-card fade-in" id="newsCard">
+          <h3>📰 News Impact <span class="news-district-tag" id="newsDistrictTag"></span></h3>
+          <div id="newsList" class="news-list">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        </div>
+
+        <!-- MSP Card -->
+        <div class="card msp-card fade-in" id="mspCard">
+          <h3>🏛️ MSP Information</h3>
+          <div class="msp-body">
+            <div class="msp-row">
+              <span>Current Price</span>
+              <span class="msp-val" id="mspCurrent">--</span>
+            </div>
+            <div class="msp-row">
+              <span>MSP</span>
+              <span class="msp-val" id="mspValue">--</span>
+            </div>
+            <div class="msp-row">
+              <span>Above MSP</span>
+              <span class="msp-val" id="mspAbove">--</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COMPARISON SECTION -->
+    <section id="comparison" class="section">
+      <div class="section-header fade-in">
+        <h2 class="section-title">🗺️ District Market Comparison</h2>
+        <p class="section-sub" id="compMeta">Select a crop to compare districts</p>
+      </div>
+
+      <div class="best-district-banner card fade-in" id="bestBanner">
+        <div class="best-icon">🏆</div>
+        <div>
+          <div class="best-label">Best District to Sell</div>
+          <div class="best-name" id="bestDistrict">--</div>
+        </div>
+        <div class="best-profit">
+          <div class="best-profit-label">Extra Profit</div>
+          <div class="best-profit-val" id="bestProfit">--</div>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <h3>Price Comparison by District</h3>
+        <div id="compTable" class="comp-table">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line"></div>
+        </div>
+      </div>
+
+      <div class="card chart-card fade-in">
+        <h3>District Price Chart</h3>
+        <div class="chart-wrap">
+          <canvas id="compChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI RESEARCH SECTION -->
+    <section id="ai" class="section">
+      <div class="section-header fade-in">
+        <h2 class="section-title">🤖 AI Research Assistant</h2>
+        <p class="section-sub">Ask anything about crops, markets, farming practices</p>
+      </div>
+
+      <div class="rag-badge-bar">
+        <span class="rag-powered-badge">⚡ Powered by RAG + OpenRouter</span>
+        <span class="rag-context-badge" id="ragContextBadge">Context: select a crop first</span>
+      </div>
+
+      <div class="ai-layout">
+        <div class="card ai-chat-card fade-in">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot">
+              <span class="chat-avatar">🌾</span>
+              <div class="chat-bubble">
+                Hello! I'm your Agricultural Research Assistant. Ask me anything about crop prices, farming techniques, market trends, or agricultural policies.
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" id="aiQuery" class="chat-input" placeholder="Ask about crops, prices, farming..." />
+            <button class="btn btn-primary" id="askBtn">Ask</button>
+          </div>
+          <div class="quick-questions">
+            <span class="quick-label">Quick:</span>
+            <button class="quick-btn" data-q="What is the current price and MSP for Rice?">Rice price & MSP</button>
+            <button class="quick-btn" data-q="Best time to sell Tomato?">Sell Tomato</button>
+            <button class="quick-btn" data-q="What pests affect Chilli crop?">Chilli pests</button>
+            <button class="quick-btn" data-q="How does monsoon affect Onion prices?">Monsoon impact</button>
+            <button class="quick-btn" data-q="How to grow Maize in Andhra Pradesh?">Grow Maize</button>
+            <button class="quick-btn" data-q="What diseases affect Tomato plants?">Tomato diseases</button>
+          </div>
+        </div>
+
+        <div class="ai-sidebar fade-in">
+          <div class="card sources-card" id="sourcesCard">
+            <h3>📚 Retrieved Sources</h3>
+            <p class="rag-sources-hint">Sources used to answer your question appear here after each response.</p>
+            <div class="rag-source-list">
+              <div class="rag-source-item" id="rsrcPrice">🗄️ Crop Price Data</div>
+              <div class="rag-source-item" id="rsrcWeather">🌤️ Weather Data</div>
+              <div class="rag-source-item" id="rsrcNews">📰 News Data</div>
+              <div class="rag-source-item" id="rsrcMsp">🏛️ MSP Data</div>
+              <div class="rag-source-item" id="rsrcDistrict">📊 District Comparison</div>
+              <div class="rag-source-item" id="rsrcSentiment">🧠 Sentiment Analysis</div>
+            </div>
+            <div id="sourcesList" style="margin-top:0.5rem"></div>
+          </div>
+          <div class="card confidence-card" id="confidenceCard" style="display:none">
+            <h3>Confidence</h3>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-bar" id="confidenceBar"></div>
+            </div>
+            <div class="confidence-pct" id="confidencePct"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>🌾 Farmer's Choice &nbsp;|&nbsp; Empowering farmers with data-driven insights</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

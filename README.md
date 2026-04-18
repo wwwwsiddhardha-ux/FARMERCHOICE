@@ -1,148 +1,114 @@
-# 🌾 AI Farmer Market Intelligence
+# 🌾 KrishiAI — Agricultural Market Intelligence
 
-> Hackathon Project — AI-powered crop price prediction using historical mandi data & real-time weather
-
----
-
-## 👥 Team Structure
-
-| Role | Members | Responsibility |
-|------|---------|----------------|
-| Frontend | 2 members | React UI, Charts, Dropdowns, Alerts |
-| Backend  | 2 members | Node.js API, AI Logic, Weather Integration |
+> AI-powered crop price prediction for Andhra Pradesh & Telangana farmers
 
 ---
 
-## 🚀 Quick Start (Single Command)
+## ⚡ Quick Start
 
 ```bash
-# Step 1 — Install all dependencies
+# 1. Install dependencies
 npm run install-all
 
-# Step 2 — Build React frontend
+# 2. Build frontend
 npm run build
 
-# Step 3 — Start everything
+# 3. Start (auto-seeds DB + serves everything)
 npm start
 ```
 
-Open: **http://localhost:5000**
+Open: **http://localhost:5001**
+
+> The server **automatically deletes old data and seeds fresh 30-day data** every startup. No manual seeding needed.
 
 ---
 
-## 🔑 Add OpenWeather API Key
+## 🔑 API Keys (backend/.env)
 
-Edit `backend/.env`:
-```
-OPENWEATHER_API_KEY=your_actual_key_here
-PORT=5000
-```
-
-Get a free key at: https://openweathermap.org/api
-
-> Without a key, weather falls back to safe defaults (temp: 30°C, humidity: 60%, rain: 0mm)
+| Key | Where to get | Required |
+|-----|-------------|----------|
+| `OPENWEATHER_API_KEY` | openweathermap.org/api | ✅ Already set |
+| `GNEWS_API_KEY` | gnews.io | ✅ Already set |
+| `OPENROUTER_API_KEY` | openrouter.ai (free) | ⚠️ Paste full key for AI answers |
+| `JWT_SECRET` | Any random string | ✅ Already set |
 
 ---
 
-## 📁 Project Structure
+## ✅ Verified Working
+
+| Feature | Status |
+|---------|--------|
+| MySQL auto-seed on startup | ✅ 5704 rows in ~500ms |
+| Location APIs (states/districts/crops) | ✅ |
+| Prediction engine (EMA + regression) | ✅ |
+| OpenWeather current + 5-day forecast | ✅ |
+| GNews + NLP sentiment | ✅ |
+| RAG + OpenRouter (fallback if no key) | ✅ |
+| Historical accuracy tracking | ✅ |
+| Auth (JWT login/register) | ✅ |
+| Frontend build | ✅ Zero errors |
+
+---
+
+## 📁 Structure
 
 ```
-AI-Farmer-Market-Intelligence/
-├── backend/
-│   ├── server.js                  ← Express entry point
-│   ├── routes/predictRoutes.js    ← POST /api/predict-price
-│   ├── controllers/predictController.js
-│   ├── services/
-│   │   ├── weatherService.js      ← OpenWeather API
-│   │   ├── predictionService.js   ← Core prediction logic
-│   │   └── mandiService.js        ← Mandi data filtering
-│   ├── utils/trendCalculator.js   ← Moving avg, alerts, suggestions
-│   └── data/
-│       ├── mandi_prices.json      ← 5 crops × 4 districts × 2 mandals
-│       └── locationData.json      ← State → District → Mandal hierarchy
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── InputForm.js       ← Dependent dropdowns + loading
-│   │   │   ├── PriceChart.js      ← Chart.js dual-line graph
-│   │   │   ├── WeatherCard.js     ← Weather display
-│   │   │   └── AlertCard.js       ← Alerts + smart suggestions
-│   │   ├── pages/
-│   │   │   ├── Home.js            ← Landing + form
-│   │   │   └── Results.js         ← Full dashboard
-│   │   └── data/locationData.js   ← Frontend dropdown data
-│   └── package.json
-│
-├── package.json   ← Root: install-all / build / start
-└── README.md
+backend/
+  server.js          ← Express + auto-seed on startup
+  seedMarket.js      ← Drops + recreates market_data (30 days, AP+TG)
+  services/          ← prediction, weather, news, sentiment, RAG
+  routes/            ← All API endpoints
+  utils/cronJob.js   ← Daily price refresh at 6AM
+
+frontend/
+  src/pages/         ← Login, Dashboard
+  src/components/    ← All UI cards and views
+  dist/              ← Built frontend served by Express
 ```
 
 ---
 
 ## 🌐 API Reference
 
-### POST `/api/predict-price`
-
-**Request:**
-```json
-{
-  "crop": "Wheat",
-  "state": "Punjab",
-  "district": "Ludhiana",
-  "mandal": "Ludhiana East"
-}
-```
-
-**Response:**
-```json
-{
-  "historicalPrices": [{ "date": "2024-06-01", "price": 2100 }, ...],
-  "predictedPrices":  [{ "date": "2024-06-08", "price": 2195 }, ...],
-  "trend": "Increasing",
-  "avgPrice": 2153,
-  "alerts": [{ "type": "warning", "message": "🌧 Moderate rain expected..." }],
-  "suggestion": "✅ Best time to sell: around 2024-06-10 — predicted peak ₹2210/quintal.",
-  "weather": { "temp": 32, "humidity": 65, "rain": 0, "description": "clear sky" }
-}
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/location/states` | List states |
+| GET | `/api/location/districts?state=` | Districts for state |
+| GET | `/api/location/crops?state=&district=` | Crops available in district |
+| POST | `/api/predict-price` | Full prediction with weather+sentiment |
+| GET | `/api/market-data?crop=&district=` | Raw market prices |
+| GET | `/api/weather?district=` | Current weather |
+| GET | `/api/news?district=` | News articles |
+| POST | `/api/news/sentiment` | NLP sentiment analysis |
+| POST | `/api/rag/query` | AI research assistant |
+| GET | `/api/accuracy` | Prediction accuracy history |
+| POST | `/api/auth/register` | Register user |
+| POST | `/api/auth/login` | Login → JWT token |
 
 ---
 
-## 🧠 Prediction Logic
+## 🧠 Prediction Engine
 
-1. Filter mandi data by crop + district + mandal
-2. Take last 7 days → compute moving average
-3. Detect trend (last price vs first of last 5)
-4. Apply weather impact per day:
-   - Rain > 10mm → +5% price
-   - Rain > 5mm  → +3% price
-   - Temp > 42°C → -4% price
-   - Humidity > 85% → +2% price
-5. Project 5 days forward with trend drift (±0.6%/day)
-6. Generate alerts + smart sell suggestion
-
----
-
-## 🌾 Sample Data
-
-| Crop   | State       | District  | Mandals                        |
-|--------|-------------|-----------|-------------------------------|
-| Wheat  | Punjab      | Ludhiana  | Ludhiana East, Ludhiana West  |
-| Wheat  | Haryana     | Karnal    | Karnal Central                |
-| Rice   | Punjab      | Ludhiana  | Ludhiana East                 |
-| Rice   | Haryana     | Karnal    | Karnal Central                |
-| Tomato | Maharashtra | Nashik    | Nashik Road, Sinnar           |
-| Onion  | Maharashtra | Nashik    | Nashik Road, Sinnar           |
-| Maize  | Telangana   | Nizamabad | Nizamabad Urban, Bodhan       |
+1. Fetch 7-day + 30-day historical prices from MySQL
+2. Baseline = EMA(60%) + SMA(40%)
+3. Trend = linear regression slope over 14 days
+4. Weather impact per day from 5-day forecast
+5. News impact with recency decay
+6. NLP sentiment signal (weighted 40%)
+7. Confidence intervals using historical volatility
+8. MSP floor check
+9. Best district comparison across all markets
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer    | Technology                    |
-|----------|-------------------------------|
-| Backend  | Node.js, Express, Axios, dotenv |
-| Frontend | React 18, Chart.js, Axios     |
-| Weather  | OpenWeatherMap API            |
-| Data     | JSON flat-file dataset        |
+| Layer | Technology |
+|-------|-----------|
+| Backend | Node.js, Express, MySQL2 |
+| AI/ML | Custom prediction engine, NLP sentiment |
+| RAG | OpenRouter (Mistral/Gemma/Llama free models) |
+| Weather | OpenWeatherMap API |
+| News | GNews API |
+| Frontend | React 18, Recharts, Framer Motion |
+| Auth | JWT + bcrypt |

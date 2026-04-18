@@ -1,60 +1,54 @@
 const pool = require("../config/db");
-const locationData = require("../data/locationData.json");
 
-const CROPS = ["Wheat", "Rice", "Tomato", "Onion", "Maize"];
-
+// GET /api/location/states
 async function getStates(req, res) {
   try {
-    const [rows] = await pool.execute("SELECT DISTINCT state FROM mandi_prices ORDER BY state");
-    const dbStates = rows.map((r) => r.state);
-    const jsonStates = Object.keys(locationData);
-    const merged = [...new Set([...dbStates, ...jsonStates])].sort();
-    res.json(merged);
+    const [rows] = await pool.execute(
+      "SELECT DISTINCT state FROM market_data ORDER BY state"
+    );
+    const states = rows.map((r) => r.state);
+    if (!states.length) return res.json(["Andhra Pradesh", "Telangana"]);
+    res.json(states);
   } catch {
-    res.json(Object.keys(locationData).sort());
+    res.json(["Andhra Pradesh", "Telangana"]);
   }
 }
 
+// GET /api/location/districts?state=Andhra Pradesh
 async function getDistricts(req, res) {
   const { state } = req.query;
-  if (!state) return res.status(400).json({ error: "state required" });
+  if (!state) return res.status(400).json({ error: "state query param required" });
   try {
     const [rows] = await pool.execute(
-      "SELECT DISTINCT district FROM mandi_prices WHERE state = ? ORDER BY district",
+      "SELECT DISTINCT district FROM market_data WHERE state = ? ORDER BY district",
       [state]
     );
-    const dbDistricts = rows.map((r) => r.district);
-    const jsonDistricts = locationData[state] ? Object.keys(locationData[state]) : [];
-    const merged = [...new Set([...dbDistricts, ...jsonDistricts])].sort();
-    res.json(merged);
-  } catch {
-    res.json(locationData[state] ? Object.keys(locationData[state]).sort() : []);
-  }
-}
-
-async function getMandals(req, res) {
-  const { district } = req.query;
-  if (!district) return res.status(400).json({ error: "district required" });
-  try {
-    const [rows] = await pool.execute(
-      "SELECT DISTINCT mandal FROM mandi_prices WHERE district = ? ORDER BY mandal",
-      [district]
-    );
-    const dbMandals = rows.map((r) => r.mandal);
-    // find in json
-    let jsonMandals = [];
-    for (const state of Object.values(locationData)) {
-      if (state[district]) { jsonMandals = state[district]; break; }
-    }
-    const merged = [...new Set([...dbMandals, ...jsonMandals])].sort();
-    res.json(merged);
+    res.json(rows.map((r) => r.district));
   } catch {
     res.json([]);
   }
 }
 
-function getCrops(req, res) {
-  res.json(CROPS);
+// GET /api/location/crops?state=Andhra Pradesh&district=Guntur
+// Without params → returns all unique crops (used by MarketUploadView)
+async function getCropsByDistrict(req, res) {
+  const { state, district } = req.query;
+  try {
+    if (state && district) {
+      const [rows] = await pool.execute(
+        "SELECT DISTINCT crop FROM market_data WHERE state = ? AND district = ? ORDER BY crop",
+        [state, district]
+      );
+      return res.json(rows.map((r) => r.crop));
+    }
+    // No filters — return all unique crops
+    const [rows] = await pool.execute(
+      "SELECT DISTINCT crop FROM market_data ORDER BY crop"
+    );
+    res.json(rows.map((r) => r.crop));
+  } catch {
+    res.json([]);
+  }
 }
 
-module.exports = { getStates, getDistricts, getMandals, getCrops };
+module.exports = { getStates, getDistricts, getCropsByDistrict };

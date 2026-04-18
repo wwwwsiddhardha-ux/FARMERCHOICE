@@ -1,9 +1,11 @@
 {
-  "name": "ai-farmer-fullstack",
+  "name": "krishiai-fullstack",
   "version": "1.0.0",
   "scripts": {
-    "install-all": "cd backend && npm install && cd ../frontend && npm install",
-    "build": "cd frontend && npm run build",
-    "start": "npx kill-port 5000 && cd backend && node server.js"
+    "install-all":  "cd backend && npm install && cd ../frontend && npm install",
+    "build":        "cd frontend && npm run build",
+    "start":        "cd backend && node server.js",
+    "dev:backend":  "cd backend && npx nodemon server.js",
+    "dev:frontend": "cd frontend && npm run dev"
   }
 }

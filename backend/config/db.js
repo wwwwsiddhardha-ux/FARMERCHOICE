@@ -7,6 +7,8 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DB || "farmer_market",
   waitForConnections: true,
   connectionLimit: 10,
+  queueLimit: 0,
+  enableKeepAlive: true,
 });
 
 module.exports = pool;

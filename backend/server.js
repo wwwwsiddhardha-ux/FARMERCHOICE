@@ -1,34 +1,56 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
-const path = require("path");
+const cors    = require("cors");
+const path    = require("path");
 
-const authRoutes     = require("./routes/authRoutes");
-const marketRoutes   = require("./routes/marketRoutes");
-const predictRoutes  = require("./routes/predictRoutes");
-const dataRoutes     = require("./routes/dataRoutes");
-const locationRoutes = require("./routes/locationRoutes");
-const { startCron }  = require("./utils/cronJob");
+const authRoutes          = require("./routes/authRoutes");
+const marketRoutes        = require("./routes/marketRoutes");
+const predictRoutes       = require("./routes/predictRoutes");
+const dataRoutes          = require("./routes/dataRoutes");
+const locationRoutes      = require("./routes/locationRoutes");
+const ragRoutes           = require("./routes/rag");
+const newsSentimentRoutes = require("./routes/newsSentiment");
+const accuracyRoutes      = require("./routes/accuracyRoutes");
+const dashboardRoutes     = require("./routes/dashboardRoutes");
+const { startCron }       = require("./utils/cronJob");
+const { seed }            = require("./seedMarket");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API routes
-app.use("/api/auth",     authRoutes);
-app.use("/api/market",   marketRoutes);
-app.use("/api/location", locationRoutes);
-app.use("/api",          predictRoutes);
-app.use("/api",          dataRoutes);
+// ── API routes ────────────────────────────────────────────
+app.use("/api/auth",      authRoutes);
+app.use("/api/market",    marketRoutes);
+app.use("/api/location",  locationRoutes);
+app.use("/api",           predictRoutes);
+app.use("/api",           dataRoutes);
+app.use("/api/rag",       ragRoutes);
+app.use("/api/news",      newsSentimentRoutes);
+app.use("/api/accuracy",  accuracyRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
-// Serve frontend build
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+// ── Serve plain HTML frontend ────────────────────────────
+app.use(express.static(path.join(__dirname, "../frontend")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
 
-// Start cron
-startCron();
-
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`🌾 Server running on http://localhost:${PORT}`));
+
+// ── Auto-seed fresh data then start server ────────────────
+async function startServer() {
+  try {
+    console.log("🌱  Seeding fresh market data…");
+    await seed();
+    startCron();
+    app.listen(PORT, () =>
+      console.log(`🌾  Server ready → http://localhost:${PORT}`)
+    );
+  } catch (err) {
+    console.error("❌  Startup failed:", err.message);
+    process.exit(1);
+  }
+}
+
+startServer();
