@@ -9,6 +9,140 @@
 </head>
 <body>
 
+  <!-- ===== LANDING PAGE ===== -->
+  <div id="landingPage">
+
+    <!-- Landing Nav -->
+    <nav class="lp-nav">
+      <div class="lp-nav-inner">
+        <div class="lp-logo">
+          <span class="lp-logo-icon">🌾</span>
+          <span class="lp-logo-text">Farmer's Choice</span>
+        </div>
+        <div class="lp-nav-btns">
+          <button class="lp-btn-login" id="lpLoginBtn">Login</button>
+          <button class="lp-btn-signup" id="lpSignupBtn">Sign Up</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="lp-hero">
+      <!-- Floating background orbs -->
+      <div class="lp-orb lp-orb1"></div>
+      <div class="lp-orb lp-orb2"></div>
+      <div class="lp-orb lp-orb3"></div>
+
+      <div class="lp-hero-inner">
+        <div class="lp-hero-content">
+          <div class="lp-badge">🌱 AI-Powered Agriculture</div>
+          <h1 class="lp-title">Farmer's Choice</h1>
+          <p class="lp-subtitle">AI Agricultural Research Assistant</p>
+          <p class="lp-tagline">Predict. Analyze. Decide.</p>
+          <div class="lp-hero-btns">
+            <button class="lp-btn-getstarted" id="lpGetStartedBtn">
+              <span>Get Started</span>
+              <span class="lp-btn-arrow">→</span>
+            </button>
+            <button class="lp-btn-explore" id="lpExploreBtn">Explore Features</button>
+          </div>
+          <div class="lp-stats">
+            <div class="lp-stat"><span class="lp-stat-num">5700+</span><span class="lp-stat-label">Market Records</span></div>
+            <div class="lp-stat-div"></div>
+            <div class="lp-stat"><span class="lp-stat-num">23</span><span class="lp-stat-label">Districts</span></div>
+            <div class="lp-stat-div"></div>
+            <div class="lp-stat"><span class="lp-stat-num">8</span><span class="lp-stat-label">Crops Tracked</span></div>
+          </div>
+        </div>
+
+        <!-- Hero Visual -->
+        <div class="lp-hero-visual">
+          <div class="lp-visual-card lp-vc-main">
+            <div class="lp-vc-header">
+              <span>🌾 Rice — Guntur</span>
+              <span class="lp-vc-live">● LIVE</span>
+            </div>
+            <div class="lp-vc-price">₹2,340</div>
+            <div class="lp-vc-sub">/quintal · Tomorrow forecast</div>
+            <div class="lp-vc-trend">▲ +3.2% vs yesterday</div>
+            <div class="lp-vc-bars">
+              <div class="lp-bar" style="height:45%"></div>
+              <div class="lp-bar" style="height:55%"></div>
+              <div class="lp-bar" style="height:50%"></div>
+              <div class="lp-bar" style="height:65%"></div>
+              <div class="lp-bar" style="height:60%"></div>
+              <div class="lp-bar" style="height:75%"></div>
+              <div class="lp-bar lp-bar-active" style="height:85%"></div>
+            </div>
+          </div>
+          <div class="lp-visual-card lp-vc-weather">
+            <div>☀️ 34°C · Clear</div>
+            <div class="lp-vc-wsub">Low rain risk today</div>
+          </div>
+          <div class="lp-visual-card lp-vc-rec">
+            <div class="lp-vc-rec-action">💡 SELL SOON</div>
+            <div class="lp-vc-rec-sub">Confidence 84%</div>
+          </div>
+          <div class="lp-visual-card lp-vc-msp">
+            <div class="lp-vc-msp-label">MSP</div>
+            <div class="lp-vc-msp-val">₹2,300</div>
+            <div class="lp-vc-msp-above">↑ ₹40 above</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="lp-features" id="lpFeatures">
+      <div class="lp-features-inner">
+        <p class="lp-features-label">WHAT WE OFFER</p>
+        <h2 class="lp-features-title">Everything a farmer needs</h2>
+        <div class="lp-features-grid">
+          <div class="lp-fcard">
+            <div class="lp-fcard-icon" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">📈</div>
+            <h3>Price Forecast</h3>
+            <p>7-day AI price predictions using EMA, regression, weather signals and news sentiment. Know tomorrow's price today.</p>
+            <div class="lp-fcard-tags">
+              <span>7-Day Forecast</span>
+              <span>MSP Check</span>
+              <span>Trend Analysis</span>
+            </div>
+          </div>
+          <div class="lp-fcard lp-fcard-featured">
+            <div class="lp-fcard-icon" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">🌤️</div>
+            <h3>Weather Intelligence</h3>
+            <p>Real-time weather data with agricultural impact analysis. Understand how rain, heat and humidity affect your crop prices.</p>
+            <div class="lp-fcard-tags">
+              <span>Live Weather</span>
+              <span>5-Day Forecast</span>
+              <span>Crop Impact</span>
+            </div>
+          </div>
+          <div class="lp-fcard">
+            <div class="lp-fcard-icon" style="background:linear-gradient(135deg,#fff8e1,#ffecb3)">🤖</div>
+            <h3>AI Research Assistant</h3>
+            <p>Ask anything — crop diseases, pest management, cultivation guides, market trends. Powered by RAG + OpenRouter AI.</p>
+            <div class="lp-fcard-tags">
+              <span>Pest & Disease</span>
+              <span>Market Q&amp;A</span>
+              <span>Cultivation Guide</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Landing Footer -->
+    <footer class="lp-footer">
+      <span>🌾 Farmer's Choice &nbsp;·&nbsp; Empowering farmers with AI-driven insights</span>
+    </footer>
+
+  </div>
+  <!-- ===== END LANDING PAGE ===== -->
+
+  <!-- ===== MAIN APP (hidden until Get Started) ===== -->
+  <div id="appRoot" style="display:none">
+
   <!-- STICKY MARKET BAR -->
   
       
@@ -347,6 +481,8 @@
   <footer class="footer">
     <p>🌾 Farmer's Choice &nbsp;|&nbsp; Empowering farmers with data-driven insights</p>
   </footer>
+
+  </div><!-- end appRoot -->
 
   <script src="app.js"></script>
 </body>

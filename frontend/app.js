@@ -3,6 +3,19 @@
    All endpoints match backend routes exactly
    ================================================================ */
 
+/* ── LANDING PAGE ───────────────────────────────────────────────────────── */
+function showApp() {
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('appRoot').style.display = 'block';
+}
+
+document.getElementById('lpGetStartedBtn').addEventListener('click', showApp);
+document.getElementById('lpSignupBtn').addEventListener('click', showApp);
+document.getElementById('lpLoginBtn').addEventListener('click', showApp);
+document.getElementById('lpExploreBtn').addEventListener('click', () => {
+  document.getElementById('lpFeatures').scrollIntoView({ behavior: 'smooth' });
+});
+
 /* ── API ROUTES (matching backend exactly) ─────────────────────── */
 const API = {
   states:      '/api/location/states',
