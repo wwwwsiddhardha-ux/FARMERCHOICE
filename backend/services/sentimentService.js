@@ -188,7 +188,7 @@ async function analyseSentiment(articles, crop, district) {
 
     const { answer } = await queryOpenRouter(
       `In 2-3 sentences, explain how these news headlines may affect ${crop} prices in ${district}. Be specific and use numbers if possible.`,
-      ctx
+      ctx, [], null, crop, district
     );
     explanation = answer;
   } catch { /* non-critical */ }

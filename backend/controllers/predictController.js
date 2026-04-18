@@ -47,7 +47,7 @@ async function predict(req, res) {
     const [weather, weatherForecast, news] = await Promise.all([
       getWeather(district),
       getWeatherForecast(district),
-      getNews(district),
+      getNews(district, crop),
     ]);
 
     // NLP sentiment feeds into price prediction
