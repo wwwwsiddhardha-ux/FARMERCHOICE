@@ -276,11 +276,6 @@
         <p class="section-sub">Ask anything about crops, markets, farming practices</p>
       </div>
 
-      <div class="rag-badge-bar">
-        <span class="rag-powered-badge">⚡ Powered by RAG + OpenRouter</span>
-        <span class="rag-context-badge" id="ragContextBadge">Context: select a crop first</span>
-      </div>
-
       <div class="ai-layout">
         <div class="card ai-chat-card fade-in">
           <div class="chat-messages" id="chatMessages">
@@ -307,19 +302,6 @@
         </div>
 
         <div class="ai-sidebar fade-in">
-          <div class="card sources-card" id="sourcesCard">
-            <h3>📚 Retrieved Sources</h3>
-            <p class="rag-sources-hint">Sources used to answer your question appear here after each response.</p>
-            <div class="rag-source-list">
-              <div class="rag-source-item" id="rsrcPrice">🗄️ Crop Price Data</div>
-              <div class="rag-source-item" id="rsrcWeather">🌤️ Weather Data</div>
-              <div class="rag-source-item" id="rsrcNews">📰 News Data</div>
-              <div class="rag-source-item" id="rsrcMsp">🏛️ MSP Data</div>
-              <div class="rag-source-item" id="rsrcDistrict">📊 District Comparison</div>
-              <div class="rag-source-item" id="rsrcSentiment">🧠 Sentiment Analysis</div>
-            </div>
-            <div id="sourcesList" style="margin-top:0.5rem"></div>
-          </div>
           <div class="card confidence-card" id="confidenceCard" style="display:none">
             <h3>Confidence</h3>
             <div class="confidence-bar-wrap">
